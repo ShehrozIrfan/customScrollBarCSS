@@ -1,0 +1,85 @@
+<!-- Creating a custom scroll bar with only 24 lines of CSS -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Scroll Bar</title>
+    <style>
+    /* basic page style*/
+    body {
+        background: #171414;
+        font-family: "Courier New", Courier, monospace;
+        color: #ffffff;
+        padding: 5% 15%  ;
+    }
+    p {
+        font-size: 1.5rem;
+    }
+    p:first-of-type {
+        margin-top: 100px;
+    }
+    h1 {
+    font-size: 80px;
+    opacity: 25%;
+    font-family: Arial, Helvetica, sans-serif;
+    }
+    /* now we'll hide the default browser scroll bar */
+    /* Hiding in chrome and safari */
+    ::-webkit-scrollbar {
+        width: 0;
+        background: transparent;
+    }
+    /* Hiding in firefox mozilla */
+    html {
+        scrollbar-width: none;
+    }
+    /* We want our scroll bar container to be fixed to the right side of the viewport so we’ll use position fixed with top and right values set to 0. We’ll give the scroll container a width of ten pixels and a very light grey background. */
+    #progressBarContainer {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        width: 10px;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.05);
+    }
+    /* Our progress bar will also be fixed to the right side of the viewport and have a width of ten pixels, however we’ll give it a linear gradient from red to violet in order to make it stand out. */
+    /* But We want to dynamically update the height and opacity of our progress bar on scroll so let’s set height and opacity to zero. */
+    #progressBar {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        width:10px;
+        height: 0;
+        opacity: 0; 
+        background: linear-gradient(to top, violet, red);
+    }
+    </style>
+</head>
+<body>
+    <!-- The progress bar will indicate how far down the page the user has scrolled. The progress bar container will span the entire height of the page and contain the progress bar.-->
+    <div id="progressBar"></div>
+    <div id="progressBarContainer"></div>
+    <h1>Custom Scroll Bar</h1>
+    <h1>Welcome.</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, pariatur! Vero, provident. Excepturi modi repellat autem aperiam ipsum. Mollitia cupiditate vero neque exercitationem officia, accusamus tempore assumenda iusto voluptatibus hic!</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi, commodi! Animi aliquid saepe dolorem cum numquam corrupti optio molestias, consequuntur hic obcaecati suscipit totam alias perferendis eius, odio officiis similique.</p>
+    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque quae nihil illo accusamus voluptates eum neque quo iure sed? Obcaecati fugit quaerat est vel molestias magnam libero dolore, saepe facere.</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, minima. Libero saepe officia vitae quia nihil laborum aperiam tenetur quisquam sint aspernatur? Tempora consectetur ut necessitatibus laborum odio ipsa, unde nihil doloremque, sapiente ratione suscipit nostrum dolorem doloribus eligendi eos!</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe molestias nulla consectetur repellat expedita nemo et debitis, ipsam libero aspernatur, aliquam id ducimus iusto, consequuntur vero. Animi ipsa facilis, nobis maxime aperiam quam voluptate dolorum vel molestiae beatae laborum ducimus.</p>
+
+    <script>
+        const progressBar = document.querySelector('#progressBar');
+        /* The scrollHeight property returns the entire height of an element in pixels, including padding, but not the border, scrollbar or margin. */
+        /* The Window innerHeight property is used for returning the height of a window’s content area. It is a read-only property and returns a number which represents the height of the browser window’s content area in pixels. */
+        let totalPageHeight = document.body.scrollHeight - window.innerHeight;
+        /* Next let’s add an event listener to the window. When we scroll we want to calculate the new progress height. We can calculate this by first dividing the window’s page Y offset by the total page height to get a decimal fraction. To use this value in our CSS code we must multiply this fraction by 100 (to get a percentage). */
+        window.onscroll = () => {
+            /* The pageYOffset returns the pixels the current document has been scrolled from the upper left corner of the window vertically. */
+            let newProgressHeight = (window.pageYOffset / totalPageHeight) * 100;
+            progressBar.style.opacity = `${newProgressHeight}%`;
+            progressBar.style.height = `${newProgressHeight}%`;
+        }
+    </script>
+</body>
+</html>
